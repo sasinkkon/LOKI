@@ -1,0 +1,2 @@
+# LOKI
+Varsinainen projektityön repo
