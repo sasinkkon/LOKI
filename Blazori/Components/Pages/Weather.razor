@@ -1,0 +1,77 @@
+﻿@page "/weather"
+@attribute [StreamRendering] 
+
+<PageTitle>Weather</PageTitle>
+
+<h1>Weather</h1>
+
+<p>This component demonstrates showing data.</p>
+
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+                <tr>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    WeatherForecast[]? forecasts; // a list to contain all forecasts. (? represents that it can be null)
+
+    protected override async Task OnInitializedAsync() // a function that is executed immediately as the page is loaded
+    {
+        // Simulate asynchronous loading to demonstrate streaming rendering
+        await Task.Delay(500); // Same as time.sleep(0.5) in Python
+
+        var startDate = DateOnly.FromDateTime(DateTime.Now);
+        var randomWeatherStates = new List<string>(); // Same as randomWeatherStates = [] in Python, so we basically create a list.
+        randomWeatherStates.AddRange(
+            ["Freezing", 
+            "Bracing", 
+            "Chilly", 
+            "Cool", 
+            "Mild", 
+            "Warm", 
+            "Balmy", 
+            "Hot", 
+            "Sweltering", 
+            "Scorching"]
+        ); // This is all just "one command" divided to multiple rows for clarity. Here we add stuff to the list.
+        // Same as randomWeatherStates.extend(newlist) in Python
+        forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        {
+            Date = startDate.AddDays(index),
+            TemperatureC = Random.Shared.Next(-20, 55),
+                Summary = randomWeatherStates[Random.Shared.Next(randomWeatherStates.Count)]
+        }).ToArray(); // we randomise different weathers with numbers and states
+    }
+
+    class WeatherForecast // A class that represent a single forecast
+    {
+        public DateOnly Date { get; set; }
+        public int TemperatureC { get; set; }
+        public string? Summary { get; set; }
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    }
+}
