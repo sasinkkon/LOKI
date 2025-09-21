@@ -1,14 +1,19 @@
-﻿
-<nav style="display:flex; background-color:lightblue">
+﻿<nav class="navlist">
     <NavLink href="" Match="NavLinkMatch.All">
         <p class="nav-text">
-            Home
+            Main
         </p>
     </NavLink>
-    <NavLink href="weather">
-        @* href value on navlink item is weather, so it will try to find a razor page with attr @page "/weather" *@
+    <NavLink href="create">
+        @* href value on navlink item is create, so it will try to find a razor page with attr @page "/create" *@
         <p class="nav-text">
-            Weather
+            Create
+        </p>
+    </NavLink>
+    <NavLink href="options">
+        @* href value on navlink item is options, so it will try to find a razor page with attr @page "/options" *@
+        <p class="nav-text">
+            Options
         </p>
     </NavLink>
 </nav>

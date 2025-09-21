@@ -1,13 +1,16 @@
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 /* All your css can be put here! Delete and add things as you wish. */
 
 .nav-text {
-    padding: 20px 50px 10px 50px;
+    padding: 20px 60px 10px 60px;
     text-decoration:none;
     color:black;
+    
+    
+
 }
 
 a, .btn-link {
@@ -21,4 +24,20 @@ a, .btn-link {
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
-
+.box {
+    border: 2px solid black;
+    border-radius: 18px;
+    padding: 2rem;
+    padding-top: 60px;
+    width: 27%;
+    position: fixed;
+    height: 700px;
+}
+.navlist {
+    display: flex;
+    padding-left: 30px;
+    background-color: #c9a0f2;
+}
+.navbar-wrapper {
+    margin-top: 90px;
+}

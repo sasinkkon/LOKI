@@ -2,12 +2,14 @@
 
 <div>
     <main>
+        <div class="navbar-wrapper"> @*Empty space above the navbar*@
+            </div>
         <div>
             <NavMenu /> @* Here we render the NavMenu.razor file *@
         </div>
         <article>
             @*Here we render the current page we're on with @Body command. as default we try to find a page 
-              that has definition for root, AKA @page "/", which can be found in Counter.razor first line*@
+              that has definition for root, AKA @page "/", which can be found in Main.razor first line*@
             @Body
         </article>
     </main>
