@@ -1,0 +1,63 @@
+/* This defines CSS in Sign_In page */
+
+/* This is grey background box behind login box */
+.page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* full screen height */
+    background-color: #f4f4f9; /* Color behind login box */
+}
+
+/* White box behind login credentials */
+.login {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* Horizontal offset 0, Vertical offset 4px, Blur radius 10px */
+    width: 320px;
+    text-align: center;
+}
+
+    .login h2 {
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #333; /* Dark grey */
+    }
+
+.formgroup {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.form {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc; /* Light Grey */
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.checkbox {
+    display: flex;
+    align-items: center;
+}
+
+    .checkbox label {
+        margin-left: 6px;
+    }
+
+.button {
+    width: 100%;
+    padding: 10px;
+    background: #0078d4; /* Light Blue */
+    color: #fff; /* Text Color White */
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+    .button:hover {
+        background: #005fa3; /* Dark Blue */
+    }

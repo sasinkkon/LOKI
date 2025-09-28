@@ -23,6 +23,8 @@ html, body {
     font-size: 24px;
     font-weight: bold;
 }
+
+/*CSS for profile picture in navbar*/
 .profile-pic {
     position: absolute;
     top: 10px;
