@@ -5,19 +5,13 @@ using System.Text.Json;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Program
+namespace SaveLoad
 {
 
 
-    public class UserData
+    class Program
     {
-        public string User { get; set; }
-        public string Pass { get; set; }
-    }
-
-    class Saving
-    {
-        public static void Main()
+        public static void Cock()
 
         {
             // Prompts user for information to add to .json file
@@ -57,7 +51,7 @@ namespace Program
                 Pass = password
             };
 
-            var datastorage = new
+            DataStorage datastorage = new DataStorage
             {
                 Sleep = 6,
                 Bio = bio
