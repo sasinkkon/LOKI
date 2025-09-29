@@ -28,6 +28,8 @@
 .formgroup {
     margin-bottom: 15px;
     text-align: left;
+    display: flex;
+    flex-direction: column;
 }
 
 .form {
@@ -40,7 +42,8 @@
 
 .checkbox {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    flex-direction: row;
 }
 
     .checkbox label {
