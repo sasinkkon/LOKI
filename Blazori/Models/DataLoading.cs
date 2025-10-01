@@ -12,7 +12,8 @@ namespace SaveLoad
 
     public class DataLoading
     {
-        public static string Load(string user)
+        //Load method uses UserData Class as its data structure and it can be called to "Load" data from encrypted .Json files.
+        public static UserData Load(string user)
 
         {
             
@@ -20,20 +21,25 @@ namespace SaveLoad
             //PATH TO USER FILES: repos\jsontestbench\jsontestbench\bin\Debug\net9.0\Users
             string directoryPath = @AppDomain.CurrentDomain.BaseDirectory;
             string mainFolder = @$"{directoryPath}\Users";
-            
-            
+            string newSubfolderName = user; // Define folder name from the given username
+            string newFolderPath = Path.Combine(mainFolder, newSubfolderName);
 
 
-            //Pull and decrypt the encrypted file, put it into the console.
+
+
+            //Pull and decrypt the encrypted file, put it into the console.           
             string encryptedUserFile = @$"{mainFolder}\{user}\userdata.json";
-            string output = PullEncryptedFromFile(encryptedUserFile);
-            return output;
+            string output = PullEncryptedFromFile(encryptedUserFile, newFolderPath);
+            var DeserializedUserData = JsonSerializer.Deserialize<UserData>(output);
+
+            //Returns UserData Class in Json deserialized Class form, aka. normal Class form where data can be used easily in C# functions.
+            return DeserializedUserData;
 
         }
        
         
         //This method Pulls data from encrypted .json file to a form which can be read by human.
-        public static string PullEncryptedFromFile(string encryptedUserFile)
+        public static string PullEncryptedFromFile(string encryptedUserFile, string newFolderPath)
         {
 
             // Read encrypted Base64 string
@@ -41,19 +47,22 @@ namespace SaveLoad
             byte[] encryptedBytes = Convert.FromBase64String(encryptedBase64);
 
             // Read key and IV
-            byte[] key = Convert.FromBase64String(File.ReadAllText("key.txt"));
-            byte[] iv = Convert.FromBase64String(File.ReadAllText("iv.txt"));
+            // Key and IV path is also specified by variable "newFolderPath" passed to PullEncryptedFromFile method .
+            byte[] key = Convert.FromBase64String(File.ReadAllText(@$"{newFolderPath}\key.txt"));
+            byte[] iv = Convert.FromBase64String(File.ReadAllText(@$"{newFolderPath}\iv.txt"));
 
             // Decrypt
             string decrypted = DecryptStringFromBytes_Aes(encryptedBytes, key, iv);
             
+            //Returns all decrypted data in string type object.
             return decrypted;
 
 
         }
 
 
-       public static string DecryptStringFromBytes_Aes(byte[] cipherText, byte[] Key, byte[] IV)
+        //This method Decrypts data from Passed chipherText, needs also passed Key and IV in byte type to work.
+        public static string DecryptStringFromBytes_Aes(byte[] cipherText, byte[] Key, byte[] IV)
         {
             // Check arguments.
             if (cipherText == null || cipherText.Length <= 0)
@@ -93,6 +102,7 @@ namespace SaveLoad
                 }
             }
 
+            //Returns decrypted data in string type
             return plaintext;
         }
     }

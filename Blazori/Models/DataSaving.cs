@@ -8,13 +8,21 @@ using System.Text;
 namespace SaveLoad
 {
 
-
     public class DataSaving
     {
+        //Save method saves inputs into UserData Class structure and handles encryption and filewriting to a local filesystem.
         public static void Save(string user, string password, string bio)
 
         {
-            
+            //If for some reason empty input isn't handled in frontend, creates the dummy "error guy" user data instead of breaking everything.
+            if (user == null | password == null | bio == null)
+            {
+                user = "ERROR GUY";
+                password = "ERROR";
+                bio = "I'm the spooky error guy booooo! Something went wrong with ur input. Fix that.";
+            } 
+                
+
             //PATH TO USER FILES: repos\jsontestbench\jsontestbench\bin\Debug\net9.0\Users
             string directoryPath = @AppDomain.CurrentDomain.BaseDirectory;
             string mainFolder = @$"{directoryPath}\Users";
@@ -29,15 +37,15 @@ namespace SaveLoad
             // Create the new folder if it doesn't exist
             Directory.CreateDirectory(newFolderPath);
 
-           
+            string keyLocation = @$"{newFolderPath}\key.txt";
+            string ivLocation = @$"{newFolderPath}\iv.txt";
 
 
             // Define the user and storage JSON file paths
             string userFilePath = Path.Combine(newFolderPath, "userdata.json");
             string storagesonFilePath = Path.Combine(newFolderPath, "datastorage.json");
 
-            // Create an object to serialize
-            //Creates instance for userdata for pulling the information 
+            // Create an object to serialize       
             UserData userDataInstance = new UserData
             {
                 User = user,
@@ -56,16 +64,19 @@ namespace SaveLoad
             string storageDataJson = JsonSerializer.Serialize(datastorage, new JsonSerializerOptions { WriteIndented = true });
 
             // Encrypt the file
-            SaveEncryptedToFile(userDataJson,userFilePath,storageDataJson,storagesonFilePath);
+            SaveEncryptedToFile(userDataJson,userFilePath,storageDataJson,storagesonFilePath, newFolderPath);
 
           
 
 
         }
+
+
         //This method encrypts data and writes it into the userdata.json file as a base64 encoded string.
-        private static void SaveEncryptedToFile(string userData, string userDataPath, string storageData, string storagePath)
+        private static void SaveEncryptedToFile(string userData, string userDataPath, string storageData, string storagePath, string newFolderPath)
         {
             
+
             // Create Aes keys
             using (Aes myAes = Aes.Create())
             {
@@ -82,16 +93,16 @@ namespace SaveLoad
                 File.WriteAllText(storagePath, storageData);
 
 
-                // Save key and IV securely in .txt files which are stored in programs current base directory
-                File.WriteAllText("key.txt", Convert.ToBase64String(myAes.Key));
-                File.WriteAllText("iv.txt", Convert.ToBase64String(myAes.IV));
+                // Save key and IV securely in .txt files which are stored in the given users directory
+                File.WriteAllText(@$"{newFolderPath}\key.txt", Convert.ToBase64String(myAes.Key));
+                File.WriteAllText(@$"{newFolderPath}\iv.txt", Convert.ToBase64String(myAes.IV));
 
 
             }
         }
 
         
-
+        //EncryptStringToBytes_Aes encrypts data.
         public static byte[] EncryptStringToBytes_Aes(string plainText, byte[] Key, byte[] IV)
         {
             // Check arguments.
