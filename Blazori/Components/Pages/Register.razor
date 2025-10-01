@@ -1,46 +1,64 @@
 ﻿@page "/Register"
 @rendermode InteractiveServer
-<code>THIS PAGE WILL CREATE AN ACCOUNT INTO ...bin\Debug\net8.0\Users\(given username)</code>
+<code>IF U WANNA TEST, THIS PAGE WILL CREATE AN ACCOUNT INTO: ----> ...bin\Debug\net8.0\Users\(given username)</code>
 <div class="page">
-    <div class="register">
-        <h2>Register account</h2>
-        <div class="formgroup">
-            <label>Username</label> 
-            <input @bind="username" class="form" /> 
-        </div>
 
-        <div class="formgroup">
-            <label>Password</label>
-			<input @bind="password" class="form" />	
-			
-        </div>
+	@if (!didUserSave)
+	{
+		<div class="register">
+			<h2>Register account</h2>
+			<div class="formgroup">
+				<label>Username</label>
+				<input type="text" @bind="username" class="form" />
+			</div>
+
+			<div class="formgroup">
+				<label>Password</label>
+				<input type="password" @bind="password" class="form" />
+
+			</div>
+
+			<div class="formgroup">
+				<label>Bio</label>
+				<input type="text" @bind="bio" class="form" />
+
+			</div>
+
+			<button class="button" @onclick="Save">Register</button>
+		</div>
+	}
+
+	@* Debug message. *@
+	@if (didUserSave)
+	{
+		<div class="register">
+		<h1>SUCCESSFULLY REGISTERED!</h1>
 
 		<div class="formgroup">
-			<label>Bio</label>
-			<input @bind="bio" class="form" />
+
+		<h2>You have registered the user @Load().User</h2>
+		<h2>The account password is @Load().Pass</h2>
 
 		</div>
-        
-        <button class="button" @onclick="Save">Register</button>
-    </div>
+		</div>
+	}
+	
 </div>
-@* Debug message. *@
-@if(username != null)
-{
-	<h2>You have registered the user @Load().User</h2>
-	<h2>The account password is @Load().Pass</h2>
-}
+
 
 @code {
 	//This is defined by the user's input.
 	public string? username;
 	public string? password;
 	public string? bio;
+	public bool didUserSave;
 
 	//Save input from frontend and create user directory and files based off of it.
 	private void Save()
 	{
 		SaveLoad.DataSaving.Save(username, password, bio);
+		didUserSave = true;
+
 	}
 
 	//Load wanted fields of data from file -----> Pulls data based on the folder with the same name as the given username.

@@ -4,8 +4,10 @@
     flex-direction: column;
 }
 
+/*CHANGE THE FONT*/
 main {
     flex: 1;
+    font-family:Ubuntu;
 }
 
 .sidebar {
