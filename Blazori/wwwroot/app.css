@@ -24,6 +24,12 @@ html, body {
     font-weight: bold;
 }
 
+body {
+    background-image: url("pilvet.webp");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #cccccc;
+}
 /*CSS for profile picture in navbar*/
 .profile-pic {
     position: absolute;
@@ -57,7 +63,13 @@ a, .btn-link {
 .navlist {
     display: flex;
     padding-left: 30px;
-    background-color: #c9a0f2;
+    /* From https://css.glass */
+    background: rgba(247, 183, 209, 0);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(247, 183, 209, 0.54);
 }
 .navbar-wrapper {
     margin-top: 90px;
