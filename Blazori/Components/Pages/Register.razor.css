@@ -4,9 +4,14 @@
 .page {
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh; /* full screen height */
-    background-color: #f4f4f9; /* Color behind login box */
+    align-content: center;
+    margin: 20px;
+    height: 80vh;
+    /* From https://css.glass */
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
 }
 
 /* White box behind login credentials */
@@ -15,8 +20,9 @@
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* Horizontal offset 0, Vertical offset 4px, Blur radius 10px */
-    width: 420px;
+    width: 320px;
     text-align: center;
+    margin: 175px; /* Saa n‰ytt‰m‰‰n laatikon oikean suuruselta*/
 }
 
     .register h2 {
