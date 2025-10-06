@@ -8,3 +8,38 @@
     <h2>@SaveLoad.DataLoading.Load(Sign_in.loggedUser).User</h2>
     <h2>@SaveLoad.DataLoading.Load(Sign_in.loggedUser).Pass</h2>
     </div>
+
+
+    @*The box on the right side of the main page*@
+<div class="avgsleep">
+    <h1> </h1>
+
+</div>
+<div class="avgsleepcircle">
+    <h1>@SaveLoad.StorageLoading.Load(Sign_in.loggedUser).Sleep</h1>
+</div>
+
+@*css for the curved text *@
+<style> 
+    svg text {
+        font-size: 36px;
+        fill: white;
+        font-family: Georgia, serif;
+        font-weight: bold;
+        letter-spacing: 2px;
+        text-shadow: 1px 1px 2px gray, 0 0 1em black, 0 0 0.2em black;
+    }
+</style>
+
+<svg viewBox="0 0 500 500" width="500" height="500"> @*Curved text things*@
+    <!-- The path (the curve) -->
+    <path id="curve" fill="none"
+          d="M73.2,148.6c4-6.1,65.5-96.8,178.6-95.6c111.3,1.2,170.8,90.3,175.1,97" />
+
+    <!-- The curved text -->
+    <text text-anchor="middle" font-size="28" fill="tomato" font-weight="bold">
+        <textPath xlink:href="#curve" startOffset="50%">
+            Average Sleep
+        </textPath>
+    </text>
+</svg>
