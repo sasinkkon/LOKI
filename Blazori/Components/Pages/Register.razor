@@ -1,5 +1,7 @@
 ﻿@page "/Register"
 @rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
 <code>IF U WANNA TEST, THIS PAGE WILL CREATE AN ACCOUNT INTO: ----> ...bin\Debug\net8.0\Users\(given username)</code>
 <div class="page">
 
@@ -23,8 +25,12 @@
 				<input type="text" @bind="bio" class="form" />
 
 			</div>
-
+			@if(registerFailed)
+			{
+				<h2 style="color:red">Registering failed. Make sure you have filled all input fields.</h2>
+			}
 			<button class="button" @onclick="Save">Register</button>
+			<button class="button" style="background-color:red" @onclick="@(() => NavigationManager.NavigateTo(""))">Don't have an account?</button>
 		</div>
 	}
 
@@ -52,12 +58,23 @@
 	public string? password;
 	public string? bio;
 	public bool didUserSave;
-
+	public bool registerFailed;
 	//Save input from frontend and create user directory and files based off of it.
 	private void Save()
 	{
-		SaveLoad.DataSaving.Save(username, password, bio);
-		didUserSave = true;
+		try{
+			SaveLoad.DataSaving.Save(username, password, bio);
+			registerFailed = false;
+			didUserSave = true;
+			Thread.Sleep(3000);
+			NavigationManager.NavigateTo($"");
+
+		}
+		catch
+		{
+			registerFailed = true;
+		}
+		
 
 	}
 
@@ -72,6 +89,7 @@
 			//If it can't be found for some reason, create empty userdata.
 			catch
 			{
+				
 				return new UserData();
 			}
 

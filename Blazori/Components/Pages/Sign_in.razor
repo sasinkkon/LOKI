@@ -1,34 +1,53 @@
 ﻿@page "/"
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
 
 <div class="page">
     <div class="login">
         <h2>Sign In</h2>
         <div class="formgroup">
             <label>Email Address</label> 
-            <InputText @bind-Value="loginMode.username" class="form" /> 
+            <InputText @bind-Value="username" class="form" /> 
         </div>
 
         <div class="formgroup">
             <label>Password</label>
-            <InputText @bind-Value="loginMode.password" type="password" class="form" />
+            <InputText @bind-Value="password" type="password" class="form" />
         </div>
 
-        <div class="formgroup checkbox">
-            <InputCheckbox @bind-Value="loginMode.rememberme" />
-            <label>Remember me</label>
-        </div>
 
-        <button type="submit" class="button">Login</button>
+        <button class="button" @onclick="@(() => HandleNavigation("main"))">Login</button>
+
+
+
+
     </div>
 </div>
 
 @code {
-    private LoginMode loginMode = new();
 
-    public class LoginMode
+    private NavigationManager _navigation;
+
+    public string? username;
+    public string? password;
+    public static string? loggedUser;
+
+    public void HandleNavigation(string page)
     {
-        public string username { get; set; }
-        public string password { get; set; }
-        public bool rememberme { get; set; }
+
+
+        var userHasAccess = CredidentalsManager.CredidentalsManager.isUserAccess(username, password);
+
+
+        if (userHasAccess == true)
+        {
+            NavigationManager.NavigateTo($"/{page}");
+            loggedUser = username;
+        }
+        else
+        {
+            NavigationManager.NavigateTo("/Register");
+        }
     }
 }
+ 

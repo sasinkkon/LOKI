@@ -3,19 +3,31 @@
 <div>
     <main>
         <div>
-        <NavLink href="main" Match="NavLinkMatch.All">
-            <span class="logo">Loki</span>
-        </NavLink>
-        <NavLink href="register">
+            @if (Pages.Sign_in.loggedUser != null)
+            {
+                <NavLink href="main" Match="NavLinkMatch.All">
+                    <span class="logo">Loki</span>
+                </NavLink>
+            } else
+            {
+                <NavLink href="" Match="NavLinkMatch.All">
+                    <span class="logo">Loki</span>
+                </NavLink>
+            }
+            <NavLink href="register">
                 @* href value on navlink item is register, so it will try to find a razor page with attr @page "/register" *@
             <img class="profile-pic" src="profile.webp" alt="Profile" />
         </NavLink>
         </div>
         <div class="navbar-wrapper"> @*Empty space above the navbar*@
             </div>
-        <div>
-            <NavMenu /> @* Here we render the NavMenu.razor file *@
-        </div>
+        @if (Pages.Sign_in.loggedUser != null)
+        {
+            <div>
+                <NavMenu /> @* Here we render the NavMenu.razor file *@
+            </div>
+        }
+
         <article>
             @*Here we render the current page we're on with @Body command. as default we try to find a page 
               that has definition for root, AKA @page "/", which can be found in Main.razor first line*@
