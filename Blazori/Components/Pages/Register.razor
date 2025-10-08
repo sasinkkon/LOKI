@@ -2,7 +2,9 @@
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 
+@*delete this*@
 <code>IF U WANNA TEST, THIS PAGE WILL CREATE AN ACCOUNT INTO: ----> ...bin\Debug\net8.0\Users\(given username)</code>
+
 <div class="page">
 
 	@if (!didUserSave)
@@ -30,7 +32,7 @@
 				<h2 style="color:red">Registering failed. Make sure you have filled all input fields.</h2>
 			}
 			<button class="button" @onclick="Save">Register</button>
-			<button class="button" style="background-color:red" @onclick="@(() => NavigationManager.NavigateTo(""))">Don't have an account?</button>
+			<button class="button" style="background-color:red" @onclick="@(() => NavigationManager.NavigateTo(""))">Did you mean to sign in?</button>
 		</div>
 	}
 
@@ -38,15 +40,17 @@
 	@if (didUserSave)
 	{
 		<div class="register">
+
 		<h1>SUCCESSFULLY REGISTERED!</h1>
 
 		<div class="formgroup">
 
 		<h2>You have registered the user @Load().User</h2>
-		<h2>The account password is @Load().Pass</h2>
 
 		</div>
+			<button class="button" @onclick="@(() => NavigationManager.NavigateTo(""))">Sign in</button>
 		</div>
+		
 	}
 	
 </div>
@@ -66,8 +70,7 @@
 			SaveLoad.DataSaving.Save(username, password, bio);
 			registerFailed = false;
 			didUserSave = true;
-			Thread.Sleep(3000);
-			NavigationManager.NavigateTo($"");
+			
 
 		}
 		catch

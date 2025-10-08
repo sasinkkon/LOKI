@@ -59,6 +59,7 @@
 .button {
     width: 100%;
     padding: 10px;
+    margin: 10px;
     background: #0078d4; /* Light Blue */
     color: #fff; /* Text Color White */
     border: none;
