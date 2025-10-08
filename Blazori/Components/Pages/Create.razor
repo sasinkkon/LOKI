@@ -1,12 +1,23 @@
 ﻿@rendermode InteractiveServer
 @page "/create"
 <PageTitle>Calendar</PageTitle>
-@*Tässä on jonkinlaine kalenteri mitä voi muokkaa tarpeen mukaan. siinä ei kans ne napit toimi jostai syystä*@
+@*Tässä on jonkinlaine kalenteri mitä voi muokkaa tarpeen mukaan. siinä ei kans ne napit toimi jostai syystä. *@
 
 
 <button @onclick="() => CreateMonth(-1)">Previous Month</button>
 <h1>@monthName, @year</h1>
 <button @onclick="() => CreateMonth(1)">Next Month</button>
+
+<!-- Viikonpäivien otsikot -->
+<section style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; font-weight: bold; text-align: center;">
+	<div>Mon</div>
+	<div>Tue</div>
+	<div>Wed</div>
+	<div>Thu</div>
+	<div>Fri</div>
+	<div>Sat</div>
+	<div>Sun</div>
+</section>
 
 <section>
 	@for (int i = 0; i < numDummyColumn; i++)
@@ -27,6 +38,16 @@
 		</div>
 	}
 </section>
+@*
+@if (selectedDate != null)
+{
+	<div style="margin-top: 20px; border: 1px solid #ccc; padding: 10px;">
+		<h3>Add Event for @selectedDate?.ToString("dd.MM.yyyy")</h3>
+		<input placeholder="Event name" @bind="newEventName" />
+		<button @onclick="AddEvent">Add</button>
+		<button @onclick="CancelAdd">Cancel</button>
+	</div>
+}*@
 
 @code {
 	string monthName = "";
@@ -36,6 +57,8 @@
 	int year = 2020;
 	int month = 0;
 	List<CalendarItem> items = new List<CalendarItem>();
+	@*DateTime? selectedDate = null;
+	string newEventName = "";*@
 	protected override void OnInitialized()
 	{
 		items.Add(new CalendarItem(new DateTime(2020, 11, 11), "Test day 1"));
@@ -48,12 +71,14 @@
 	void CreateMonth(int masway)
 	{
 		monthsAway += masway;
-		var tempDate = DateTime.Now.AddMonths(monthsAway);
+		var tempDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(monthsAway);
 		month = tempDate.Month;
 		year = tempDate.Year;
 
 		DateTime monthStart = new DateTime(year, month, 1);
 		monthEnd = monthStart.AddMonths(1).AddDays(-1);
+		int dayOfWeek = (int)monthStart.DayOfWeek;
+		numDummyColumn = dayOfWeek;
 		monthName = monthStart.Month switch
 		{
 			1 => "January",
@@ -70,7 +95,33 @@
 			12 => "December",
 			_ => ""
 		};
+		numDummyColumn = ((int)monthStart.DayOfWeek == 6) ? 6 : dayOfWeek - 1;
+	}
+	@*void SelectDate(DateTime date)
+	{
+		selectedDate = date;
+		newEventName = "";
+	}
 
-		numDummyColumn = (int)monthStart.DayOfWeek;
+	@*tapahtumien lisääminen
+	void AddEvent()
+	{
+		if (!string.IsNullOrWhiteSpace(newEventName) && selectedDate.HasValue)
+		{
+			items.Add(new CalendarItem(selectedDate.Value, newEventName));
+		}
+
+		newEventName = "";
+		selectedDate = null;
+	}
+
+	void CancelAdd()
+	{
+		selectedDate = null;
+		newEventName = "";
+	}
+	void DeleteEvent(CalendarItem evt)
+	{
+		items.Remove(evt);*@
 	}
 }
