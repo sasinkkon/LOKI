@@ -11,15 +11,14 @@ namespace SaveLoad
     public class DataSaving
     {
         //Save method saves inputs into UserData Class structure and handles encryption and filewriting to a local filesystem.
-        public static void Save(string user, string password, string bio)
+        public static void Save(string user, string password)
 
         {
             //If for some reason empty input isn't handled in frontend, creates the dummy "error guy" user data instead of breaking everything.
-            if (user == null | password == null | bio == null)
+            if (user == null | password == null)
             {
                 user = "ERROR GUY";
                 password = "ERROR";
-                bio = "I'm the spooky error guy booooo! Something went wrong with ur input. Fix that.";
             } 
                 
 
@@ -43,7 +42,7 @@ namespace SaveLoad
 
             // Define the user and storage JSON file paths
             string userFilePath = Path.Combine(newFolderPath, "userdata.json");
-            string storagesonFilePath = Path.Combine(newFolderPath, "datastorage.json");
+           
 
             // Create an object to serialize       
             UserData userDataInstance = new UserData
@@ -52,19 +51,13 @@ namespace SaveLoad
                 Pass = password
             };
 
-            var datastorage = new
-            {
-                Sleep = 6,
-                Bio = bio
-            };
-
 
             // Serialize the object to JSON
             string userDataJson = JsonSerializer.Serialize(userDataInstance, new JsonSerializerOptions { WriteIndented = true });
-            string storageDataJson = JsonSerializer.Serialize(datastorage, new JsonSerializerOptions { WriteIndented = true });
+           
 
             // Encrypt the file
-            SaveEncryptedToFile(userDataJson,userFilePath,storageDataJson,storagesonFilePath, newFolderPath);
+            SaveEncryptedToFile(userDataJson, userFilePath, newFolderPath);
 
           
 
@@ -73,7 +66,7 @@ namespace SaveLoad
 
 
         //This method encrypts data and writes it into the userdata.json file as a base64 encoded string.
-        private static void SaveEncryptedToFile(string userData, string userDataPath, string storageData, string storagePath, string newFolderPath)
+        private static void SaveEncryptedToFile(string userData, string userDataPath, string newFolderPath)
         {
             
 
@@ -90,7 +83,7 @@ namespace SaveLoad
                 
                 // Writes text into file
                 File.WriteAllText(userDataPath, encryptedBase64);
-                File.WriteAllText(storagePath, storageData);
+               
 
 
                 // Save key and IV securely in .txt files which are stored in the given users directory

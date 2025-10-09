@@ -24,11 +24,9 @@ namespace SaveLoad
             string newFolderPath = Path.Combine(mainFolder, newSubfolderName);
 
 
-
-
-            //Pull and decrypt the encrypted file, put it into the console.           
-            string encryptedUserFile = File.ReadAllText(@$"{mainFolder}\{user}\datastorage.json");  
-            DataStorage StringifiedUserStorage = JsonSerializer.Deserialize<DataStorage>(encryptedUserFile);
+           
+            string dataStorageFile = File.ReadAllText(@$"{mainFolder}\{user}\datastorage.json");  
+            DataStorage StringifiedUserStorage = JsonSerializer.Deserialize<DataStorage>(dataStorageFile);
             
 
             //Returns UserData Class in Json deserialized Class form, aka. normal Class form where data can be used easily in C# functions.

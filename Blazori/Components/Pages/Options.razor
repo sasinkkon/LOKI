@@ -1,7 +1,27 @@
 ﻿@page "/options"
 @attribute [StreamRendering] 
+@rendermode InteractiveServer
 
 <PageTitle>Options</PageTitle>
+
+<h1 style="color:red">USERSTORAGE TESTZONE ATM</h1>
+
+<div class="box">
+    <div><h2>Hope you're doing well @SaveLoad.DataLoading.Load(Sign_in.loggedUser).User</h2></div>
+    <div><h2>Your password is @SaveLoad.DataLoading.Load(Sign_in.loggedUser).Pass</h2></div>
+</div>
+
+<div class="box">
+    <div><h2>What are you up to @SaveLoad.DataLoading.Load(Sign_in.loggedUser).User?</h2></div>
+    <div>
+        <label>Bio</label>
+        <input type="text" @bind="bio" />
+        <button @onclick="SaveBio">Save bio</button>
+    </div>
+    <div>@SaveLoad.StorageLoading.Load(Sign_in.loggedUser).Bio</div>
+</div>
+
+<div>
 
 <h1>Options</h1>
 
@@ -9,10 +29,61 @@
 
 <button class="button" style="background-color:red" @onclick="Remove">Remove Profile</button>
 
+</div>
+
 @code {
     private void Remove()
     {
-        
+
     }
-}
+
+    public bool saveFailed;
+    public string? bio = "";
+    public float sleep = 0;
+    public List<string> bios = new List<string>();
+
+    public string MakeBio(string bio)
+    {
+		
+        try
+        {
+			bios.Add(bio);
+
+            string bioString = "";
+
+            for (int i = 0; i < bios.Count; i++) 
+            {
+            bioString += bios[i] + "||";
+            }
+            return bioString;
+        }
+        catch
+        {
+            return "";
+        }
+       
+    }
+    
+
+
+    private void SaveBio()
+    {
+        try
+        {
+            SaveLoad.StorageSaving.Save(Sign_in.loggedUser, bio);
+            saveFailed = false;
+
+        }
+        catch
+        {
+            saveFailed = true;
+        }
+    }
+   
+    }
+
+
+
+
+
 

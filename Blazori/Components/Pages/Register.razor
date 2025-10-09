@@ -22,11 +22,7 @@
 
 			</div>
 
-			<div class="formgroup">
-				<label>Bio</label>
-				<input type="text" @bind="bio" class="form" />
 
-			</div>
 			@if(registerFailed)
 			{
 				<h2 style="color:red">Registering failed. Make sure you have filled all input fields.</h2>
@@ -60,14 +56,14 @@
 	//This is defined by the user's input.
 	public string? username;
 	public string? password;
-	public string? bio;
 	public bool didUserSave;
 	public bool registerFailed;
 	//Save input from frontend and create user directory and files based off of it.
 	private void Save()
 	{
 		try{
-			SaveLoad.DataSaving.Save(username, password, bio);
+			SaveLoad.DataSaving.Save(username, password);
+			SaveLoad.StorageSaving.Save(username, "");
 			registerFailed = false;
 			didUserSave = true;
 			

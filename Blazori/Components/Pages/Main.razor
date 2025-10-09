@@ -5,9 +5,10 @@
 <PageTitle>Main</PageTitle> @* This sets the title attribute of the page, that is shown in the browser tab*@
 
 <div class="box">
-    <h2>@SaveLoad.DataLoading.Load(Sign_in.loggedUser).User</h2>
-    <h2>@SaveLoad.DataLoading.Load(Sign_in.loggedUser).Pass</h2>
+    <div><h2>Here's your recent activity, @SaveLoad.DataLoading.Load(Sign_in.loggedUser).User.</h2></div>
+   
     </div>
+
 
 
     @*The box on the right side of the main page*@
@@ -16,7 +17,7 @@
 
 </div>
 <div class="avgsleepcircle">
-    <h1>@SaveLoad.StorageLoading.Load(Sign_in.loggedUser).Sleep</h1>
+    <h1>null h</h1>
 </div>
 
 @*css for the curved text *@
@@ -43,3 +44,6 @@
         </textPath>
     </text>
 </svg>
+
+
+        

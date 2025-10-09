@@ -52,6 +52,8 @@ a, .btn-link {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 .box {
+    display: flex;
+    flex-direction: column;
     border: 2px solid black;
     padding: 2rem;
     padding-top: 60px;
@@ -59,7 +61,6 @@ a, .btn-link {
     width: 27%;
     position: fixed;
     height: 700px;
-    display: flex;
     padding-left: 30px;
     /* From https://css.glass */
     background: rgba(247, 183, 209, 0);
@@ -68,7 +69,6 @@ a, .btn-link {
     box-shadow: 0 4px 50px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    
 }
 
 .avgsleep {
