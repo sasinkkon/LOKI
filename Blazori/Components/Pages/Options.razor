@@ -33,6 +33,8 @@
 
 @code {
 
+    public bool hasSaved = false;
+
     private void Remove()
     {
 
@@ -48,12 +50,16 @@
 
         try
         {
+             if (!hasSaved)
+             {
+                string[] existingData = SaveLoad.StorageLoading.Load(Sign_in.loggedUser);
 
-            string[] existingData = SaveLoad.StorageLoading.Load(Sign_in.loggedUser);
+                string storageDataJsonOld = string.Join("||", existingData);
 
-            string storageDataJsonOld = string.Join("||", existingData);
+                bios.Add(storageDataJsonOld);
 
-            bios.Add(storageDataJsonOld);
+              }
+
             bios.Add(bio);
 
             string bioString = "";
@@ -77,6 +83,7 @@
         {
             bio = MakeBio(bio);
             SaveLoad.StorageSaving.Save(Sign_in.loggedUser, bio);
+			hasSaved = true;
             saveFailed = false;
 
         }
