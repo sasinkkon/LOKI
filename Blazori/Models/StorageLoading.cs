@@ -1,42 +1,58 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
-using System.Text.Json;
-using System.Text;
 using System.Runtime.CompilerServices;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace SaveLoad
 {
 
-
     public class StorageLoading
     {
-        //Load method uses UserData Class as its data structure and it can be called to "Load" data from encrypted .Json files.
-        public static DataStorage Load(string user)
+        public static string StorageJsonString;
 
+        // Load method uses UserData Class as its data structure and it can be called to "Load" data from encrypted .Json files.
+        public static string[] Load(string user)
         {
-            
+            string directoryPath = AppDomain.CurrentDomain.BaseDirectory;
+            string mainFolder = Path.Combine(directoryPath, "Users");
+            string userFolderPath = Path.Combine(mainFolder, user);
+            string dataStorageFilePath = Path.Combine(userFolderPath, "datastorage.json");
 
-            //PATH TO USER FILES: repos\jsontestbench\jsontestbench\bin\Debug\net9.0\Users
-            string directoryPath = @AppDomain.CurrentDomain.BaseDirectory;
-            string mainFolder = @$"{directoryPath}\Users";
-            string newSubfolderName = user; // Define folder name from the given username
-            string newFolderPath = Path.Combine(mainFolder, newSubfolderName);
+            if (!File.Exists(dataStorageFilePath))
+                return Array.Empty<string>();
+
+            string dataStorageFile = File.ReadAllText(dataStorageFilePath);
 
 
-           
-            string dataStorageFile = File.ReadAllText(@$"{mainFolder}\{user}\datastorage.json");  
-            DataStorage StringifiedUserStorage = JsonSerializer.Deserialize<DataStorage>(dataStorageFile);
-            
+            DataStorageSplitter userStorage = JsonSerializer.Deserialize<DataStorageSplitter>(dataStorageFile);
 
-            //Returns UserData Class in Json deserialized Class form, aka. normal Class form where data can be used easily in C# functions.
-            return StringifiedUserStorage;
+            if (userStorage == null || string.IsNullOrEmpty(userStorage.Bio))
+                return Array.Empty<string>();
 
-        }
-
-          
+            return userStorage.Bio.Split(new[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
         }
     }
+
+    public class DataStorageSplitter
+    {
+        public string Bio { get; set; }
+
+        [JsonIgnore]
+        public string[] Dialogs
+        {
+            get
+            {
+                return string.IsNullOrEmpty(Bio)
+                    ? Array.Empty<string>()
+                    : Bio.Split(new[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
+            }
+        }
+    }
+
+}
 
 
 
