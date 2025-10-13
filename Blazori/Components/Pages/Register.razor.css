@@ -21,6 +21,7 @@
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* Horizontal offset 0, Vertical offset 4px, Blur radius 10px */
     width: 320px;
+    height: 390px;
     text-align: center;
     margin: 175px; /* Saa n‰ytt‰m‰‰n laatikon oikean suuruselta*/
 }

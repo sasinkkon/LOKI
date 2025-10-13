@@ -38,6 +38,40 @@ main {
         text-overflow: ellipsis;
     }
 
+/*There starts sign in and log in buttons CSS*/
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-right: 20px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.sign-in {
+    background-color: #0078ff;
+}
+
+    .sign-in:hover {
+        background-color: #005ecb;
+    }
+
+.register {
+    background-color: #ff0000;
+}
+
+    .register:hover {
+        background-color: #cc0000;
+    }
+
+/*There stops sign in and log in buttons CSS*/
 @media (max-width: 640.98px) {
     .top-row {
         justify-content: space-between;

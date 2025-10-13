@@ -8,16 +8,22 @@
                 <NavLink href="main" Match="NavLinkMatch.All">
                     <span class="logo">Loki</span>
                 </NavLink>
+            
+                <NavLink href="register">
+                    @* href value on navlink item is register, so it will try to find a razor page with attr @page "/register" *@
+                    <img class="profile-pic" src="profile.webp" alt="Profile" />
+                </NavLink>
             } else
             {
                 <NavLink href="" Match="NavLinkMatch.All">
                     <span class="logo">Loki</span>
                 </NavLink>
+                <div class="buttons">
+                    <NavLink class="btn sign-in" href="">Sign In</NavLink>
+                    <NavLink class="btn register" href="/register">Register</NavLink>
+                </div>
             }
-            <NavLink href="register">
-                @* href value on navlink item is register, so it will try to find a razor page with attr @page "/register" *@
-            <img class="profile-pic" src="profile.webp" alt="Profile" />
-        </NavLink>
+            
         </div>
         <div class="navbar-wrapper"> @*Empty space above the navbar*@
             </div>
