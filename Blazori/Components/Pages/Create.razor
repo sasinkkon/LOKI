@@ -24,21 +24,29 @@
 	{
 		<div></div>
 	}
+
 	@for (int i = 1; i <= monthEnd.Day; i++)
 	{
-		var calendarItem =
-		items.FirstOrDefault(n => n.Date == new DateTime(year, month, i));
+		var date = new DateTime(year, month, i);
+		var calendarItems = items.Where(n => n.Date.Date == date.Date).ToList();
 
-		<div>
-			<h2>@i</h2>
-			@if (calendarItem != null)
+		<div style="border: 1px solid #ccc; padding: 5px; cursor: pointer;" @onclick="() => SelectDate(date)">
+			<h3>@i</h3>
+
+			@if (calendarItems.Any())
 			{
-				<p>@calendarItem.Name</p>
+				@foreach (var evt in calendarItems)
+				{
+					<div style="font-size: 0.9em; margin-bottom: 3px;">
+						@evt.Name
+						<button style="margin-left: 5px; font-size: 0.7em;" @onclick="() => DeleteEvent(evt)">x</button>
+					</div>
+				}
 			}
 		</div>
 	}
 </section>
-@*
+
 @if (selectedDate != null)
 {
 	<div style="margin-top: 20px; border: 1px solid #ccc; padding: 10px;">
@@ -47,7 +55,7 @@
 		<button @onclick="AddEvent">Add</button>
 		<button @onclick="CancelAdd">Cancel</button>
 	</div>
-}*@
+}
 
 @code {
 	string monthName = "";
@@ -57,8 +65,8 @@
 	int year = 2020;
 	int month = 0;
 	List<CalendarItem> items = new List<CalendarItem>();
-	@*DateTime? selectedDate = null;
-	string newEventName = "";*@
+	DateTime? selectedDate = null;
+	string newEventName = "";
 	protected override void OnInitialized()
 	{
 		items.Add(new CalendarItem(new DateTime(2020, 11, 11), "Test day 1"));
@@ -97,13 +105,13 @@
 		};
 		numDummyColumn = ((int)monthStart.DayOfWeek == 6) ? 6 : dayOfWeek - 1;
 	}
-	@*void SelectDate(DateTime date)
+	void SelectDate(DateTime date)
 	{
 		selectedDate = date;
 		newEventName = "";
 	}
 
-	@*tapahtumien lisääminen
+	//tapahtumien lisääminen
 	void AddEvent()
 	{
 		if (!string.IsNullOrWhiteSpace(newEventName) && selectedDate.HasValue)
@@ -122,6 +130,6 @@
 	}
 	void DeleteEvent(CalendarItem evt)
 	{
-		items.Remove(evt);*@
+		items.Remove(evt);
 	}
 }
