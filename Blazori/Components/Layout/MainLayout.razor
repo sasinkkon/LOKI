@@ -8,11 +8,6 @@
                 <NavLink href="main" Match="NavLinkMatch.All">
                     <span class="logo">Loki</span>
                 </NavLink>
-            
-                <NavLink href="register">
-                    @* href value on navlink item is register, so it will try to find a razor page with attr @page "/register" *@
-                    <img class="profile-pic" src="profile.webp" alt="Profile" />
-                </NavLink>
             } else
             {
                 <NavLink href="" Match="NavLinkMatch.All">
@@ -25,8 +20,6 @@
             }
             
         </div>
-        <div class="navbar-wrapper"> @*Empty space above the navbar*@
-            </div>
         @if (Pages.Sign_in.loggedUser != null)
         {
             <div>
@@ -39,5 +32,11 @@
               that has definition for root, AKA @page "/", which can be found in Main.razor first line*@
             @Body
         </article>
+        <footer>
+            <!-- Footer content goes here -->
+            <p>2025 Project Loki. All rights reserved. </p>
+        </footer>
     </main>
 </div>
+
+

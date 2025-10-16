@@ -1,21 +1,13 @@
-﻿<nav class="navlist">
-    <NavLink href="main" Match="NavLinkMatch.All">
-        <p class="nav-text">
-            Main
-        </p>
-    </NavLink>
-    <NavLink href="create">
-        @* href value on navlink item is create, so it will try to find a razor page with attr @page "/create" *@
-        <p class="nav-text">
-            Create
-        </p>
-    </NavLink>
-    <NavLink href="options">
-        @* href value on navlink item is options, so it will try to find a razor page with attr @page "/options" *@
-        <p class="nav-text">
-            Options
-        </p>
-    </NavLink>
-    
-</nav>
+﻿<header class="navbar-wrapper">
+    <div class="logo">SleepTracker</div>
 
+    <nav class="navlist">
+        <NavLink href="main" Match="NavLinkMatch.All" class="nav-text"> Main </NavLink>
+        <NavLink href="create" class="nav-text">Create</NavLink>
+        <NavLink href="options" class="nav-text">Options</NavLink>
+    </nav>
+
+    <NavLink href="/register" class="profile-link">
+        <img src="profile.webp" alt="Profile picture" class="profile-pic" />
+    </NavLink>
+</header>

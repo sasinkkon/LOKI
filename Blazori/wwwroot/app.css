@@ -1,142 +1,227 @@
-html, body {
-    font-family: 'Times New Roman', Times, serif;
-}
-
-/* All your css can be put here! Delete and add things as you wish. */
-
-.nav-text {
-    padding: 20px 60px 10px 60px;
-    text-decoration:none;
-    color:black;
-    
-    
-
-}
-/*Defining the CSS for the logo*/
-.logo {
-    font-family: "Leckerli One", cursive;
-    font-weight: 400;
-    font-style: normal;
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    font-size: 24px;
-    font-weight: bold;
-}
-
 body {
+    font-family: 'Times New Roman', Times, serif;
     background-image: url("pilvet.webp");
     background-repeat: no-repeat;
     background-size: cover;
     background-color: #cccccc;
-}
-/*CSS for profile picture in navbar*/
-.profile-pic {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+    margin: 0;
+    overflow: hidden; /* Hide scrollbars */
 }
 
-a, .btn-link {
-    color: #006bb7;
+/* Sivun perusrakenne */
+.main-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+    padding: 2rem;
 }
-.btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
-}
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-.box {
+
+    /* Vasemman puolen laatikko */
+    .box h2 {
+        font-size: 1.4rem;
+    }
+
+/* Oikea puoli */
+.right-panel {
     display: flex;
     flex-direction: column;
-    border: 2px solid black;
-    padding: 2rem;
-    padding-top: 60px;
-    margin: 50px;
-    width: 27%;
-    position: fixed;
-    height: 700px;
-    padding-left: 30px;
-    /* From https://css.glass */
-    background: rgba(247, 183, 209, 0);
-    border-radius: 16px;
-    border: none;
-    box-shadow: 0 4px 50px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    align-items: center;
+    justify-content: center;
 }
 
-.avgsleep {
-    border: 2px solid black;
-    display: inline-block;
-    background-color: yellow;
-    padding-top: 60px;
-    margin: 50px;
-    width: 750px;
-    height: 700px;
-    text-align: left;
-    position: absolute;
-    right: 10%;
-    margin-right: -50px;
-    text-align: center;
-    /* From https://css.glass */
-    background: rgba(247, 183, 209, 0);
-    border-radius: 16px;
-    border: none;
-    box-shadow: 0 4px 50px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-}
-.avgsleeptext {
-    padding-top: 55px;
-}
+/* Sleep circle */
 .avgsleepcircle {
-    height: 300px;
-    width: 300px;
-    border-radius: 50%;
-    background-color: yellow;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 40px;
-    color: black;
-    position: absolute;
-    right: 19%;
-    top: 45%;
-    background: rgba(247, 183, 209, 0);
+    background: rgba(255, 255, 255, 0.25);
     box-shadow: 0 4px 50px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 50%;
+    width: clamp(150px, 30vw, 300px);
+    height: clamp(150px, 30vw, 300px);
+    color: black;
+    font-size: 2rem;
+    margin-top: 2rem;
     text-align: center;
-}
-.navlist {
-    display: flex;
-    padding-left: 30px;
-    /* From https://css.glass */
-    background: rgba(247, 183, 209, 0);
-    border-radius: 16px;
-    border: none;
-    box-shadow: 0 4px 50px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     
 }
-.navbar-wrapper {
-    margin-top: 90px;
+
+/* Kaareva teksti */
+.curve-text {
+    width: 100%;
+    height: auto;
 }
-.path {
-    fill: transparent;
+
+/* Responsiivisuus */
+@media (max-width: 900px) {
+    .main-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .avgsleepcircle {
+        margin: 2rem auto;
+    }
+}
+/* === NAVBAR YLEISESTI === */
+.navbar-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+/* === LOGO === */
+.logo {
+    font-family: "Leckerli One", cursive;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: black;
+}
+
+/* === NAVLINKIT === */
+.navlist {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-text {
+    text-decoration: none;
+    color: black;
+    font-size: 1.1rem;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+    .nav-text:hover {
+        color: #006bb7;
+        transform: scale(1.05);
+    }
+
+/* === PROFIILIKUVA === */
+.profile-pic {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.7);
 
 }
-svg {
-    position: absolute; /* or relative */
-    top: 360px;
-    right: 14%;
-    width: 500px;
-    height: 500px;
+/* Remove all default link/button styles */
+.profile-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+/* Keep your nice profile pic styling */
+.profile-pic {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+    .profile-pic:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+
+
+/* === RESPONSIVIISUUS (mobiili) === */
+@media (max-width: 768px) {
+    .navbar-wrapper {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .navlist {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+    }
+}
+
+.main-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    padding: 2rem;
+    flex-wrap: wrap; /* so it stacks on smaller screens */
+}
+
+/* left box */
+.box {
+    flex: 1 1 45%;
+    min-width: 300px;
+    aspect-ratio: 1 / 1;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    box-shadow: 0 4px 50px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(12px);
+    padding: 2rem;
+    color: black;
+    text-align: center;
+}
+
+/* right box */
+.avgsleep {
+    flex: 1 1 45%;
+    min-width: 300px;
+    aspect-ratio: 1 / 1;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    box-shadow: 0 4px 50px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(12px);
+    padding: 2rem;
+    color: black;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* the circle inside the right box */
+.avgsleepcircle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    aspect-ratio: 1 / 1;
+    margin-top: 1rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 4px 50px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(15px);
+    font-size: 1.5rem;
+}
+
+/* responsive stacking */
+@media (max-width: 900px) {
+    .main-layout {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .box, .avgsleep {
+        width: 90%;
+        aspect-ratio: auto;
+    }
 }
