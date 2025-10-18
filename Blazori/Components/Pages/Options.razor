@@ -16,7 +16,7 @@
     <div>
         <label>Bio</label>
         <input type="text" @bind="bio" />
-        <button @onclick="SaveBio">Save bio</button>
+        <button @onclick="SaveEntry">Save bio</button>
     </div>
         <div>@((MarkupString)PrintBio())</div>
 </div>
@@ -45,7 +45,7 @@
     public float sleep = 0;
     public List<string> bios = new List<string>();
 
-    public string MakeBio(string bio)
+    public string AddEntry(string bio)
     {
 
         try
@@ -77,11 +77,11 @@
 
     }
 
-    private void SaveBio()
+    private void SaveEntry()
     {
         try
         {
-            bio = MakeBio(bio);
+            bio = AddEntry(bio);
             SaveLoad.StorageSaving.Save(Sign_in.loggedUser, bio);
 			hasSaved = true;
             saveFailed = false;

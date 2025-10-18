@@ -58,6 +58,86 @@
 }
 
 @code {
+
+
+	//DATA SAVING LOGIC
+
+	public bool hasSaved = false;
+
+	private void Remove()
+	{
+
+	}
+
+	public bool saveFailed;
+	public string? bio = "";
+	public float sleep = 0;
+	public List<string> bios = new List<string>();
+
+	public string AddEntry(string bio)
+	{
+
+
+		try
+		{
+			if (!hasSaved)
+			{
+				string[] existingData = SaveLoad.StorageLoading.Load(Sign_in.loggedUser);
+
+				string storageDataJsonOld = string.Join("||", existingData);
+
+				bios.Add(storageDataJsonOld);
+
+			}
+
+			string currentTime = (selectedDate.Value.Day + "/" + selectedDate.Value.Month + "/" + selectedDate.Value.Year);
+			bios.Add(currentTime);
+			bios.Add(bio);
+			string bioString = "";
+
+			for (int i = 0; i < bios.Count; i++)
+			{
+				bioString += bios[i] + "||";
+			}
+
+			return bioString;
+		}
+		catch
+		{
+			return bio;
+		}
+
+	}
+
+	private void SaveEntry()
+	{
+		try
+		{
+			bio = AddEntry(bio);
+			SaveLoad.StorageSaving.Save(Sign_in.loggedUser, bio);
+			hasSaved = true;
+			saveFailed = false;
+
+		}
+		catch
+		{
+			saveFailed = true;
+		}
+	}
+
+	public string PrintBio()
+	{
+
+		string[] pulledbios = SaveLoad.StorageLoading.Load(Sign_in.loggedUser);
+
+		return string.Join("<br>", pulledbios);
+
+	}
+
+
+
+	//CALENDAR LOGIC
+
 	string monthName = "";
 	DateTime monthEnd;
 	int monthsAway = 0;
@@ -65,14 +145,47 @@
 	int year = 2020;
 	int month = 0;
 	List<CalendarItem> items = new List<CalendarItem>();
+	string[] existingData = SaveLoad.StorageLoading.Load(Sign_in.loggedUser);
 	DateTime? selectedDate = null;
 	string newEventName = "";
+
 	protected override void OnInitialized()
 	{
-		items.Add(new CalendarItem(new DateTime(2020, 11, 11), "Test day 1"));
-		items.Add(new CalendarItem(new DateTime(2020, 11, 30), "Test day 2"));
-		items.Add(new CalendarItem(new DateTime(2020, 12, 25), "Christmas"));
-		items.Add(new CalendarItem(new DateTime(2021, 1, 1), "New Years"));
+		items.Add(new CalendarItem(new DateTime(2025, 10, 21), "English presentation"));
+		int datalength = existingData.Length;
+		for (int i = 0; i <= datalength; i++)
+		{
+			
+			try
+			{
+				string date = existingData[i];
+
+				// Split the string at the '/' characters
+				string[] parts = date.Split('/');
+
+				// Assign each part to a variable
+				string day = parts[0];
+				string month = parts[1];
+				string year = parts[2];
+
+				// Optional: convert them to integers
+				int dayNum = int.Parse(day);
+				int monthNum = int.Parse(month);
+				int yearNum = int.Parse(year);
+
+
+
+				string note = existingData[i++ + 1];
+				items.Add(new CalendarItem(new DateTime(yearNum, monthNum, dayNum), note));
+			} 
+			catch
+			{
+				break;
+			}
+			
+		}
+
+		
 		CreateMonth(0);
 	}
 
@@ -117,6 +230,8 @@
 		if (!string.IsNullOrWhiteSpace(newEventName) && selectedDate.HasValue)
 		{
 			items.Add(new CalendarItem(selectedDate.Value, newEventName));
+			bio = newEventName;
+			SaveEntry();
 		}
 
 		newEventName = "";
@@ -132,4 +247,12 @@
 	{
 		items.Remove(evt);
 	}
+
+
+
+	
+
+
+
+
 }
