@@ -178,6 +178,7 @@ body {
     padding: 2rem;
     color: black;
     text-align: center;
+    
 }
 
 /* right box */
@@ -203,7 +204,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 200px;
+    width: 30%;
+    height: 30%;
     aspect-ratio: 1 / 1;
     margin-top: 1rem;
     border-radius: 50%;
@@ -220,8 +222,20 @@ body {
         align-items: center;
     }
 
-    .box, .avgsleep {
+    .box, .recent, .avgsleep {
         width: 90%;
         aspect-ratio: auto;
     }
+}
+
+.recent {
+    display: flex;
+    justify-content:flex-start;
+    flex-direction: column;
+    margin: 2rem;
+    padding-right:5%;
+    font-size: 2rem;
+    align-items:stretch;
+    flex-wrap:wrap;
+    text-align: left;
 }

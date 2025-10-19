@@ -6,10 +6,36 @@
 <div class="main-layout">
     <!-- LEFT BOX -->
     <div class="box">
-        <h2>
-            Here's your recent activity,
-            @SaveLoad.DataLoading.Load(Sign_in.loggedUser).User.
-        </h2>
+		@if (existingData.Length >= 2)
+        {
+            <h2>
+                Here's your recent activity,
+                @SaveLoad.DataLoading.Load(Sign_in.loggedUser).User.
+            </h2>
+
+            <div class="recent">
+
+                <p>@last3Activities[0]: <br />  @last3Activities[1]</p>
+
+                @if (existingData.Length >= 4)
+                {
+                <p>@last3Activities[2]: <br />  @last3Activities[3]</p>
+                }
+
+                @if (existingData.Length >= 6)
+                {
+                <p>@last3Activities[4]: <br />  @last3Activities[5]</p>
+                }
+
+            </div>
+        } else
+        {
+            <h2>
+                Your recent activity will show up here,
+                @SaveLoad.DataLoading.Load(Sign_in.loggedUser).User.
+            </h2>
+        }
+
     </div>
 
     <!-- RIGHT BOX -->
@@ -25,11 +51,26 @@
         </svg>
 
         <div class="avgsleepcircle">
-            <h1>null h</h1>
+            <h1>@last3Activities[1]</h1>
         </div>
     </div>
 </div>
 
+@code 
+{
+    string[] existingData = SaveLoad.StorageLoading.Load(Sign_in.loggedUser);
 
+    string[] last3Activities;
 
-        
+    protected override void OnInitialized()
+    {
+        if (existingData != null && existingData.Length >= 6)
+        {
+            last3Activities = [existingData[^2], existingData.Last(), existingData[^4], existingData[^3], existingData[^6], existingData[^5]];
+        }
+        else
+        {
+            last3Activities = existingData;
+        }
+	}
+}
