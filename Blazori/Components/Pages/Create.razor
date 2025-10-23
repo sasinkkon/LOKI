@@ -50,9 +50,20 @@
 @if (selectedDate != null)
 {
 	<div style="margin-top: 20px; border: 1px solid #ccc; padding: 10px;">
-		<h3>Add Event for @selectedDate?.ToString("dd.MM.yyyy")</h3>
-		<input placeholder="Event name" @bind="newEventName" />
-		<button @onclick="AddEvent">Add</button>
+		<h3>Add Entry for @selectedDate?.ToString("dd.MM.yyyy")</h3>
+
+		<div style="margin-bottom:10px;">
+			<label>Event name:</label><br />
+			<input placeholder="Event name" @bind="newEventName" />
+			<button @onclick="AddEvent">Add Event</button>
+		</div>
+
+		<div style="margin-bottom:10px;">
+			<label>Sleep hours:</label><br />
+			<input placeholder="e.g. 7.5" @bind="newSleepHours" />
+			<button @onclick="AddSleep">Add Sleep</button>
+		</div>
+
 		<button @onclick="CancelAdd">Cancel</button>
 	</div>
 }
@@ -73,6 +84,7 @@
 	public string? bio = "";
 	public float sleep = 0;
 	public List<string> bios = new List<string>();
+	
 
 	public string AddEntry(string bio)
 	{
@@ -151,7 +163,6 @@
 
 	protected override void OnInitialized()
 	{
-		items.Add(new CalendarItem(new DateTime(2025, 10, 21), "English presentation"));
 		int datalength = existingData.Length;
 		for (int i = 0; i <= datalength; i++)
 		{
@@ -245,7 +256,43 @@
 	}
 	void DeleteEvent(CalendarItem evt)
 	{
+		// Remove from list
 		items.Remove(evt);
+
+		// Rebuild save string with all remaining events
+		List<string> saveList = new List<string>();
+		foreach (var item in items)
+		{
+			string dateString = $"{item.Date.Day}/{item.Date.Month}/{item.Date.Year}";
+			saveList.Add(dateString);
+			saveList.Add(item.Name);
+		}
+
+		// Combine with || separator and save
+		string finalData = string.Join("||", saveList);
+		SaveLoad.StorageSaving.Save(Sign_in.loggedUser, finalData);
+
+		// Optional visual update
+		StateHasChanged();
+	}
+	string newSleepHours = "";
+	void AddSleep()
+	{
+		if (!string.IsNullOrWhiteSpace(newSleepHours) && selectedDate.HasValue)
+		{
+			// Create a label for display
+			string label = $"Sleep: {newSleepHours}h";
+
+			// Add to calendar items
+			items.Add(new CalendarItem(selectedDate.Value, label));
+
+			// Save same way as events
+			bio = label;
+			SaveEntry();
+		}
+
+		newSleepHours = "";
+		selectedDate = null;
 	}
 
 

@@ -1,41 +1,49 @@
-﻿@page "/Main" 
-@* Since page attr is defined as / AKA root, this page will load first *@
+﻿@page "/Main"
 @rendermode InteractiveServer
 
-<PageTitle>Main</PageTitle> @* This sets the title attribute of the page, that is shown in the browser tab*@
+<PageTitle>Main</PageTitle>
+
 <div class="main-layout">
     <!-- LEFT BOX -->
     <div class="box">
-		@if (existingData.Length >= 2)
+        @if (existingData != null && existingData.Length >= 2)
         {
             <h2>
-                Here's your recent activity,
-                @SaveLoad.DataLoading.Load(Sign_in.loggedUser).User.
+                Here's your recent activity, @username.
             </h2>
 
             <div class="recent">
-
-                <p>@last3Activities[0]: <br />  @last3Activities[1]</p>
-
-                @if (existingData.Length >= 4)
+                @if (last3Activities != null && last3Activities.Length >= 2)
                 {
-                <p>@last3Activities[2]: <br />  @last3Activities[3]</p>
+                    <p>
+                        @last3Activities[0]: <br />
+                        @last3Activities[1]
+                    </p>
                 }
 
-                @if (existingData.Length >= 6)
+                @if (last3Activities != null && last3Activities.Length >= 4)
                 {
-                <p>@last3Activities[4]: <br />  @last3Activities[5]</p>
+                    <p>
+                        @last3Activities[2]: <br />
+                        @last3Activities[3]
+                    </p>
                 }
 
+                @if (last3Activities != null && last3Activities.Length >= 6)
+                {
+                    <p>
+                        @last3Activities[4]: <br />
+                        @last3Activities[5]
+                    </p>
+                }
             </div>
-        } else
+        }
+        else
         {
             <h2>
-                Your recent activity will show up here,
-                @SaveLoad.DataLoading.Load(Sign_in.loggedUser).User.
+                Your recent activity will show up here, @username.
             </h2>
         }
-
     </div>
 
     <!-- RIGHT BOX -->
@@ -51,26 +59,95 @@
         </svg>
 
         <div class="avgsleepcircle">
-            <h1>@last3Activities[1]</h1>
+            @if (averageSleep > 0)
+            {
+                <h1>@($"{averageSleep:F1}h")</h1>
+            }
+            else
+            {
+                <h1>No data</h1>
+            }
         </div>
     </div>
 </div>
 
-@code 
-{
-    string[] existingData = SaveLoad.StorageLoading.Load(Sign_in.loggedUser);
+@code {
+    
+    private string[]? existingData;
+    private string[]? last3Activities;
+    private double averageSleep = 0;
 
-    string[] last3Activities;
+    // Cached username (so we don’t load repeatedly from file)
+    private string username = string.Empty;
 
     protected override void OnInitialized()
     {
+        // Load username
+        username = SaveLoad.DataLoading.Load(Sign_in.loggedUser).User;
+
+        // Load all saved data
+        existingData = SaveLoad.StorageLoading.Load(Sign_in.loggedUser);
+
+        // Prepare the last 3 activities for the left panel
         if (existingData != null && existingData.Length >= 6)
         {
-            last3Activities = [existingData[^2], existingData.Last(), existingData[^4], existingData[^3], existingData[^6], existingData[^5]];
+            last3Activities = new string[]
+            {
+            existingData[^2],  
+            existingData.Last(), 
+            existingData[^4],  
+            existingData[^3],  
+            existingData[^6],  
+            existingData[^5]   
+            };
         }
-        else
+        else if (existingData != null)
         {
             last3Activities = existingData;
         }
-	}
+        else
+        {
+            last3Activities = Array.Empty<string>();
+        }
+
+
+        if (existingData != null)
+        {
+            List<double> sleepHours = new List<double>();
+            DateTime today = DateTime.Today;
+
+            for (int i = 0; i < existingData.Length; i++)
+            {
+                string entry = existingData[i];
+
+                // Detect sleep entries
+                if (entry.StartsWith("Sleep:", StringComparison.OrdinalIgnoreCase))
+                {
+                    // Try to get the date right before the "Sleep:" entry
+                    if (i > 0 && DateTime.TryParse(existingData[i - 1], out DateTime entryDate))
+                    {
+                        // Only include entries from the last 7 days
+                        double daysAgo = (today - entryDate).TotalDays;
+                        if (daysAgo <= 7 && daysAgo >= 0)
+                        {
+                            // Extract the numeric part, e.g. "Sleep: 7.5h" -> 7.5
+                            string numberPart = entry.Replace("Sleep:", "")
+                                                     .Replace("h", "")
+                                                     .Trim();
+
+                            if (double.TryParse(numberPart,
+                                System.Globalization.CultureInfo.InvariantCulture,
+                                out double hours))
+                            {
+                                sleepHours.Add(hours);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Calculate the average
+            averageSleep = (sleepHours.Count > 0) ? sleepHours.Average() : 0;
+        }
+    }
 }
