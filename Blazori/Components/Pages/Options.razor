@@ -1,105 +1,43 @@
-﻿@page "/options"
+﻿
+
+@page "/options"
 @attribute [StreamRendering] 
 @rendermode InteractiveServer
 
 <PageTitle>Options</PageTitle>
 
-<h1 style="color:red">USERSTORAGE TESTZONE ATM</h1>
-
-<div class="box">
-    <div><h2>Hope you're doing well @SaveLoad.DataLoading.Load(Sign_in.loggedUser).User</h2></div>
-    <div><h2>Your password is @SaveLoad.DataLoading.Load(Sign_in.loggedUser).Pass</h2></div>
-</div>
-
-<div class="box">
-    <div><h2>What are you up to @SaveLoad.DataLoading.Load(Sign_in.loggedUser).User?</h2></div>
-    <div>
-        <label>Bio</label>
-        <input type="text" @bind="bio" />
-        <button @onclick="SaveEntry">Save bio</button>
-    </div>
-        <div>@((MarkupString)PrintBio())</div>
-</div>
-
-<div>
-
 <h1>Options</h1>
 
-<p>Delete profile</p>
+<div class="optbox">
+<p>Reset data</p>
 
-<button class="button" style="background-color:red" @onclick="Remove">Remove Profile</button>
-
+    <NavLink href="/main" class="button" style="background-color:red" @onclick="ResetAccData">Reset data</NavLink>
 </div>
+    <div class="optbox">
+    <p>Delete profile</p>
+
+    <NavLink href="/register" class="button" style="background-color:red" @onclick="RemoveAccount">Remove Profile</NavLink>
+</div>
+
 
 @code {
 
     public bool hasSaved = false;
-
-    private void Remove()
+    string userFolder = @AppDomain.CurrentDomain.BaseDirectory + "\\Users\\" + Sign_in.loggedUser;
+    private void RemoveAccount()
     {
-
+        Directory.Delete(userFolder, true);
+		Sign_in.loggedUser = null;
     }
 
-    public bool saveFailed;
-    public string? bio = "";
-    public float sleep = 0;
-    public List<string> bios = new List<string>();
-
-    public string AddEntry(string bio)
+    private void ResetAccData()
     {
+		{
+	        
+            SaveLoad.DataSaving.Save(Sign_in.loggedUser, SaveLoad.DataLoading.Load(Sign_in.loggedUser).Pass);
+            SaveLoad.StorageSaving.Save(Sign_in.loggedUser, "");
 
-        try
-        {
-             if (!hasSaved)
-             {
-                string[] existingData = SaveLoad.StorageLoading.Load(Sign_in.loggedUser);
-
-                string storageDataJsonOld = string.Join("||", existingData);
-
-                bios.Add(storageDataJsonOld);
-
-              }
-
-            bios.Add(bio);
-
-            string bioString = "";
-
-            for (int i = 0; i < bios.Count; i++) 
-            {
-                bioString += bios[i] + "||";
-            }
-            return bioString;
-        }
-        catch
-        {
-            return bio;
-        }
-
-    }
-
-    private void SaveEntry()
-    {
-        try
-        {
-            bio = AddEntry(bio);
-            SaveLoad.StorageSaving.Save(Sign_in.loggedUser, bio);
-			hasSaved = true;
-            saveFailed = false;
-
-        }
-        catch
-        {
-            saveFailed = true;
-        }
-    }
-
-    public string PrintBio()
-    {
-
-        string[] pulledbios = SaveLoad.StorageLoading.Load(Sign_in.loggedUser);
-
-        return string.Join("<br>", pulledbios);
-
+		}
     }
 
     }
