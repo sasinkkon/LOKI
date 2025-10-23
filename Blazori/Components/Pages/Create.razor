@@ -30,7 +30,7 @@
 		var date = new DateTime(year, month, i);
 		var calendarItems = items.Where(n => n.Date.Date == date.Date).ToList();
 
-		<div style="border: 1px solid #ccc; padding: 5px; cursor: pointer;" @onclick="() => SelectDate(date)">
+		<div style="border: 1px solid black; padding: 5px; cursor: pointer;" @onclick="() => SelectDate(date)">
 			<h3>@i</h3>
 
 			@if (calendarItems.Any())
@@ -227,7 +227,7 @@
 			12 => "December",
 			_ => ""
 		};
-		numDummyColumn = ((int)monthStart.DayOfWeek == 6) ? 6 : dayOfWeek - 1;
+		numDummyColumn = ((int)monthStart.DayOfWeek == 0) ? 6 : dayOfWeek - 1;
 	}
 	void SelectDate(DateTime date)
 	{
